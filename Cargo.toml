@@ -1,9 +1,9 @@
 [package]
 name = "weighty"
 description = "Weighty is a Rust library for reading from HID scales."
-version = "0.1.0"
+version = "0.1.1"
 authors = [ "M@ Dunlap <mattdunlap@gmail.com>" ]
-categories = [ "hid", "scale" ]
+keywords = [ "hid", "scale" ]
 repository = "https://github.com/dunmatt/weighty"
 license = "MIT"
 edition = "2018"
