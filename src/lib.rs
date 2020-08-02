@@ -68,11 +68,13 @@ pub trait ScaleDriver {
 /// udev rule and then reconnect your device.
 pub fn get_all_scales() -> Vec<Box<dyn ScaleDriver>> {
     let api = HidApi::new().expect("Couldn't aquire the HID API???");
-    api.device_list().filter_map(|info| {
-        let vendor_id = info.vendor_id();
-        let product_id = info.product_id();
-        info.open_device(&api).ok().and_then(|dev| make_driver(vendor_id, product_id, dev))
-    }).collect()
+    api.device_list()
+        .filter_map(|info| {
+            let vendor_id = info.vendor_id();
+            let product_id = info.product_id();
+            info.open_device(&api).ok().and_then(|dev| make_driver(vendor_id, product_id, dev))
+        })
+        .collect()
 }
 
 /// Returns all of one specific type of scale that are currently connected.
@@ -82,30 +84,33 @@ pub fn get_all_scales() -> Vec<Box<dyn ScaleDriver>> {
 /// udev rule and then reconnect your device.
 pub fn get_scales_by_usb_id(vendor_id: u16, product_id: u16) -> Vec<Box<dyn ScaleDriver>> {
     let api = HidApi::new().expect("Couldn't aquire the HID API???");
-    api.device_list().filter_map(|info| {
-        let vid = info.vendor_id();
-        let pid = info.product_id();
-        if vid != vendor_id || pid != product_id {
-            return None;
-        }
-        info.open_device(&api).ok().and_then(|dev| make_driver(vendor_id, product_id, dev))
-    }).collect()
+    api.device_list()
+        .filter_map(|info| {
+            let vid = info.vendor_id();
+            let pid = info.product_id();
+            if vid != vendor_id || pid != product_id {
+                return None;
+            }
+            info.open_device(&api).ok().and_then(|dev| make_driver(vendor_id, product_id, dev))
+        })
+        .collect()
 }
 
 /// Returns one specific scale, if it is connected and we have access to it.
 pub fn get_scale_by_serial_number(serial_number: &str) -> Option<Box<dyn ScaleDriver>> {
     let api = HidApi::new().expect("Couldn't aquire the HID API???");
-    let result = api.device_list().filter_map(|info| {
-        let vendor_id = info.vendor_id();
-        let product_id = info.product_id();
+    let result = api
+        .device_list()
+        .filter_map(|info| {
+            let vendor_id = info.vendor_id();
+            let product_id = info.product_id();
 
-        info.open_device(&api).ok().and_then(|dev|
-            match dev.get_serial_number_string() {
+            info.open_device(&api).ok().and_then(|dev| match dev.get_serial_number_string() {
                 Ok(Some(s)) if s == serial_number => make_driver(vendor_id, product_id, dev),
                 _ => None,
-            }
-        )
-    }).next();
+            })
+        })
+        .next();
     result
 }
 

@@ -1,5 +1,10 @@
-
-use uom::{si::{force::{kilogram_force, ounce_force, pound_force}, f64::Force}, fmt::DisplayStyle::Description};
+use uom::{
+    fmt::DisplayStyle::Description,
+    si::{
+        f64::Force,
+        force::{kilogram_force, ounce_force, pound_force},
+    },
+};
 
 use weighty;
 

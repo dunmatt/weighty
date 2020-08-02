@@ -1,9 +1,8 @@
-
 use hidapi::HidDevice;
 #[cfg(feature = "units")]
 use uom::si::{
     f64::Force,
-    force::{kilogram_force, ounce_force}
+    force::{kilogram_force, ounce_force},
 };
 
 use crate::{HidScaleError, Result, ScaleDriver};
@@ -66,7 +65,7 @@ impl ScaleDriver for DymoM10 {
         match self.read_raw() {
             Ok(DymoUnit::Grams(g)) => Ok(Force::new::<kilogram_force>(g / 1000.0)),
             Ok(DymoUnit::Ounces(o)) => Ok(Force::new::<ounce_force>(o)),
-            Err(e) => Err(e)
+            Err(e) => Err(e),
         }
     }
 
@@ -74,7 +73,7 @@ impl ScaleDriver for DymoM10 {
         match self.read_raw() {
             Ok(DymoUnit::Grams(g)) => Ok(g / 1000.0),
             Ok(DymoUnit::Ounces(o)) => Ok(o / 35.274),
-            Err(e) => Err(e)
+            Err(e) => Err(e),
         }
     }
 
@@ -82,7 +81,7 @@ impl ScaleDriver for DymoM10 {
         match self.read_raw() {
             Ok(DymoUnit::Grams(g)) => Ok(g / 453.592),
             Ok(DymoUnit::Ounces(o)) => Ok(o / 16.0),
-            Err(e) => Err(e)
+            Err(e) => Err(e),
         }
     }
 }
