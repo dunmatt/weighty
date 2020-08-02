@@ -1,9 +1,6 @@
-use uom::{
-    fmt::DisplayStyle::Description,
-    si::{
-        f64::Force,
-        force::{kilogram_force, ounce_force, pound_force},
-    },
+use uom::si::{
+    f64::Force,
+    force::{kilogram_force, ounce_force, pound_force},
 };
 
 use weighty;
@@ -23,8 +20,13 @@ fn pretty_print_force(f: Force) -> String {
 }
 
 fn main() {
-    for scale in weighty::get_all_scales() {
-        println!("{}", pretty_print_force(scale.read().unwrap()));
+    let all_scales = weighty::get_all_scales();
+    if all_scales.len() > 0 {
+        for scale in all_scales {
+            println!("{}", pretty_print_force(scale.read().unwrap()));
+        }
+    } else {
+        println!("No scales found.  Are you sure it's plugged in, on, and something you have access to?");
     }
 }
 
